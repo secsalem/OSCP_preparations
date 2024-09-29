@@ -29,8 +29,6 @@ cd enum
 echo "Running Initial TCP Nmap scan..."
 nmap  -sV -oN initial_$ip_address.txt "$ip_address"
 
-echo "Running Full TCP Nmap scan..."
-nmap  -sV -A -p- -oN full_$ip_address.txt "$ip_address"
 
 echo "Running dirsearch ..."
 dirsearch -u "$ip_address" -o dirsearch_$ip_address
@@ -38,11 +36,12 @@ dirsearch -u "$ip_address" -o dirsearch_$ip_address
 echo "Running Nmap NSE vulnerability scan..."
 nmap "$ip_address" --script vuln -oN vuln_$ip_address.txt
 
-echo "Running Nmap NSE vulnerability scan..."
-nmap "$ip_address" --script vuln -oN vuln_$ip_address.txt
-
 echo "Running Nikto web vulnerability scan..."
 nikto -h "$ip_address"  -o scan_results.txt -F txt -C all
+
+echo "Running Full TCP Nmap scan..."
+nmap  -sV -A -p- -oN full_$ip_address.txt "$ip_address"
+
 
 
 
