@@ -1,5 +1,10 @@
 #!/bin/bash
 #this script combines nmap commands and run them one by one 
+#what this script do
+#- do 4 different nmap commands (initial, full tcp, vuln scripts, udp )and save output 
+#- do simple dirsearch command 
+#- do simple nikto to website
+#- do simple nuclei test 
 
 # Check if the script is run as root
 if [[ $EUID -ne 0 ]]; then
@@ -29,9 +34,11 @@ cd enum
 echo "Running Initial TCP Nmap scan..."
 nmap  -sV -oN initial_$ip_address.txt "$ip_address"
 
-
 echo "Running dirsearch ..."
 dirsearch -u "$ip_address" -o dirsearch_$ip_address
+
+echo "Running basic Nuclei vulnerability scan..."
+nuclei -target "$ip_address" -o nuclei_$ip_address.txt
 
 echo "Running Nmap NSE vulnerability scan..."
 nmap "$ip_address" --script vuln -oN vuln_$ip_address.txt
